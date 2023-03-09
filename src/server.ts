@@ -4,7 +4,16 @@ import { connectDatabase } from './utils/dbConfig'
 import { log } from './utils/logger'
 import { startPrometheousServer } from './utils/metrics'
 import fs from 'fs'
-const file = fs.readFileSync('../AF15C78F6DF912CC029BEF4A5A8FFEFE.txt')
+import https from 'https'
+
+
+const key = fs.readFileSync('private.key')
+const cert = fs.readFileSync('certificate.crt')
+
+const cred = {
+    key,
+    cert
+}
 function startServer() {
     const server = createServer()
     const port = config.PORT
@@ -14,6 +23,10 @@ function startServer() {
         await connectDatabase()
         startPrometheousServer()
     })
+    const httpsServer = https.createServer(cred, server)
+    httpsServer.listen(8443)
 }
+
+
 
 startServer()
