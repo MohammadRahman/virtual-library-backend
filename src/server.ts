@@ -6,8 +6,9 @@ import { startPrometheousServer } from './utils/metrics'
 
 function startServer() {
     const server = createServer()
-const port = config.PORT
-    server.listen(port, async() => {
+    const port = config.PORT
+    const HOST = '0.0.0.0';
+    server.listen(port,HOST, async() => {
         log.info(`server on ${port}`)
         await connectDatabase()
         startPrometheousServer()
