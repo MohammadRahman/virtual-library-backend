@@ -16,5 +16,19 @@ export async function createUserService(input: UserInputs) {
     }
 }
 export async function findOneUserByEmail(email: UserDocument['email']) {
-    return await USER_MODEL.findOne({email})   
+    
+        const metricsLabel = {
+            operation: 'createUserService'
+        }
+    const timer = databaseResponseTimeHistogram.startTimer()
+    
+    try {
+        const result = await USER_MODEL.findOne({ email })
+        timer({ ...metricsLabel, success: 'true' })
+        return result
+    } catch (error) {
+        timer({ ...metricsLabel, success: 'true' })
+        return error
+    }
+       
 }
