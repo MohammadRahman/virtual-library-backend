@@ -10,6 +10,10 @@ export function routes(app: Express) {
     app.get('/api/healthcheck', (req: Request, res: Response) => {
         res.sendStatus(200)
     }),
+        // !ssl verification
+        app.get("/.well-known/pki-validation/AF15C78F6DF912CC029BEF4A5A8FFEFE.txt", (req: Request, res: Response) => {
+            res.sendFile('../../AF15C78F6DF912CC029BEF4A5A8FFEFE.txt')
+        })
     // ! User create/login
     app.post('/api/user/create', validate(createUserSchema), createUserHandler)
     app.post('/api/user/login', validate(loginUserSchema), createUserLoginHandler)
